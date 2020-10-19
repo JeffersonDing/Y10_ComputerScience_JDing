@@ -1,0 +1,2 @@
+heading = document.getElementById('subHeading');
+
