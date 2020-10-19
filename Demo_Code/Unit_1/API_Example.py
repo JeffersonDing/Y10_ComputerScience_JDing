@@ -17,4 +17,33 @@ location = data['timezone'].split('/')[1]
 # 2020-10-19T14:26:15.341793-0  3 4:00
 time = data['datetime'].split('T')[1].split('.')[0]
 # Print out the final data
-print(f"The current time in {location} is {time} {data['abbreviation']}")
+print(f"The current time in {location} is {time} {data['abbreviation']}\n")
+
+
+# Diversity Example
+
+fname = 'Jefferson'
+lname = 'Ding' 
+url = "https://api.diversitydata.io/?fullname="+fname+"%20"+lname
+r = requests.get(url)
+data = r.json()
+# {'fullname': 'jefferson ding', 'gender': 'male', 'ethnicity': 'asian', 'gender probability': 0.  4 9, 'ethnicity probability': 0.84}
+
+print(f"{data['fullname']} is a {data['gender']} with a probability of {data['gender probability']}. {data['fullname']} is {data['ethnicity']} with a probability of {data['ethnicity probability']} out of 1.0 \n") 
+
+# NASA (API-Key) Example
+
+url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
+response = requests.get(url)
+#print (response.text)
+findpic_start = response.text.index("url") + 6
+findpic_end = response.text.index('"', findpic_start)
+pic_url = response.text[findpic_start:findpic_end]
+print ("picture of the day: "+ pic_url+"\nnasa.html created")
+
+file =open ("nasa.html", "w")
+file.write("<html><body>")
+file.write('<iframe src="' + pic_url + '" width="100%" height="100%">')
+file.write("</body></html>")
+file.close()
+
