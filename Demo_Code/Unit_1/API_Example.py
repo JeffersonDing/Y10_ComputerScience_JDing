@@ -35,15 +35,13 @@ print(f"{data['fullname']} is a {data['gender']} with a probability of {data['ge
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
 response = requests.get(url)
-#print (response.text)
-findpic_start = response.text.index("url") + 6
-findpic_end = response.text.index('"', findpic_start)
-pic_url = response.text[findpic_start:findpic_end]
-print ("picture of the day: "+ pic_url+"\nnasa.html created")
+# print (response.text)
+data = response.json()
+print (f"picture of the day: {data['url']}\n{data['title']}.html created")
 
-file =open ("nasa.html", "w")
+file =open (f"{data['title']}.html", "w")
 file.write("<html><body>")
-file.write('<iframe src="' + pic_url + '" width="100%" height="100%">')
+file.write('<iframe src="' + data['url'] + '" width="100%" height="100%">')
 file.write("</body></html>")
 file.close()
 
