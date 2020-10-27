@@ -14,6 +14,6 @@ def perfectNum(n):
     else:
         return(False)
 
-for i in range(0,100):
+for i in range(0,1000):
     if(perfectNum(i)):
         print(f"Yes!{i} is a perfect number")
