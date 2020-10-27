@@ -1,10 +1,10 @@
 import math
-numbers = [5,2,8,1,3,7]
+nums = [5,2,8,1,3,7]
 
-print(numbers)
-print(numbers[2])
+print(nums)
+print(nums[2])
 
-for i in numbers:
+for i in nums:
     print(i, end=" ")
 
 number1 = int(input("Enter First Value: "))
