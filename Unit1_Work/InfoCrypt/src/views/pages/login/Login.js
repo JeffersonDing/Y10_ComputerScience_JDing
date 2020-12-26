@@ -18,7 +18,7 @@ import CIcon from '@coreui/icons-react'
 const makeRequest = (method, url, data)=>{
   return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest();
-      
+      xhr.withCredentials = true;
       xhr.open(method, url);
       xhr.onload = function () {
           if (this.status >= 200 && this.status < 300) {
@@ -45,23 +45,30 @@ const makeRequest = (method, url, data)=>{
       }
   });
 }
-const U2FAuth = () => {
-  makeRequest('GET', "https://localhost:5000/authchall").then(function (data) {
-    const authRequest = JSON.parse(data);
-    window.u2f.sign(authRequest.appId, authRequest.challenge, [authRequest], (authResponse) => {
-        makeRequest('POST', "https://localhost:5000/authverify", authResponse).then((result)=>{
-            console.log(result)
-        })
-    });
-});
-}
+
 const Login = () => {
   const history = useHistory();
 
   const [usr, setUsr] = useState("");
   const [otp, setOtp] = useState("");
   const [auth, setAuth] = useState(false)
-  //const [auth,setAuth] = useState(false)
+  const U2FAuth = () => {
+    makeRequest('GET', "https://localhost:5000/authchall").then(function (data) {
+      const authRequest = JSON.parse(data);
+      window.u2f.sign(authRequest.appId, authRequest.challenge, [authRequest], (authResponse) => {
+          makeRequest('POST', "https://localhost:5000/authverify", authResponse).then((result)=>{
+              if(result.valid){
+                console.log(result)
+                setAuth(true)
+                history.push('/')
+              }else{
+                console.log("Access Failed")
+              }
+              
+          })
+      });
+  });
+  }
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
