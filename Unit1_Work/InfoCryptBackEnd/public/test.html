@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<body>
+    <script>
+        function makeRequest(method, url, data) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                
+                xhr.open(method, url);
+                xhr.onload = function () {
+                    if (this.status >= 200 && this.status < 300) {
+                        resolve(xhr.response);
+                    } else {
+                        reject({
+                            status: this.status,
+                            statusText: xhr.statusText
+                        });
+                    }
+                };
+                xhr.onerror = function () {
+                    reject({
+                        status: this.status,
+                        statusText: xhr.statusText
+                    });
+                };
+                if (method == "POST" && data) {
+                    xhr.responseType = 'json';
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.send(JSON.stringify(data));
+                } else {
+                    xhr.send();
+                }
+            });
+        }
+
+        function reg() {
+            makeRequest('GET', "https://localhost:5000/register").then(function (data) {
+                var registrationRequest = JSON.parse(data);
+                window.u2f.register(registrationRequest.appId, [registrationRequest], [], (registrationResponse) => {
+                    makeRequest('POST', "https://localhost:5000/verify", registrationResponse)
+                });
+            });
+
+        }
+
+        function auth(){
+            makeRequest('GET', "https://localhost:5000/authchall").then(function (data) {
+                const authRequest = JSON.parse(data);
+                window.u2f.sign(authRequest.appId, authRequest.challenge, [authRequest], (authResponse) => {
+                    makeRequest('POST', "https://localhost:5000/authverify", authResponse).then((result)=>{
+                        console.log(result)
+                    })
+                });
+            });
+        }
+    </script>
+    <button onclick="reg()">Reg!</button>
+    <button onclick="auth()">Auth!</button>
+</body>
