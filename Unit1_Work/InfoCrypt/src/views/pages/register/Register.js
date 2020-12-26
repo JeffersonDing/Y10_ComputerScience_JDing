@@ -14,26 +14,46 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-const U2FReg = () => {
-  fetch("https://localhost:5000/register",{
-    method:'GET',
-    credentials: 'include',
-  })
-    .then((data) => {
-      return data.json()
-    }).then((registrationRequest)=>{
-      window.u2f.register(registrationRequest.appId, [registrationRequest], [], (registrationResponse) => {
-        const requestOptions = {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(registrationResponse)
+
+const makeRequest = (method, url, data)=>{
+  return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      
+      xhr.open(method, url);
+      xhr.onload = function () {
+          if (this.status >= 200 && this.status < 300) {
+              resolve(xhr.response);
+          } else {
+              reject({
+                  status: this.status,
+                  statusText: xhr.statusText
+              });
+          }
       };
-      fetch('https://localhost:5000/verify', requestOptions)
-          .then(response => response.json())
-          .then(data => console.log(data));
+      xhr.onerror = function () {
+          reject({
+              status: this.status,
+              statusText: xhr.statusText
+          });
+      };
+      if (method == "POST" && data) {
+          xhr.responseType = 'json';
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify(data));
+      } else {
+          xhr.send();
+      }
+  });
+}
+
+const U2FReg = () => {
+  makeRequest('GET', "https://localhost:5000/register").then(function (data) {
+    var registrationRequest = JSON.parse(data);
+    window.u2f.register(registrationRequest.appId, [registrationRequest], [], (registrationResponse) => {
+        makeRequest('POST', "https://localhost:5000/verify", registrationResponse)
     });
-    })
+});
+
 }
 const Register = () => {
   return (

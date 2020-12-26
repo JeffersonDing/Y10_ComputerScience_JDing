@@ -46,14 +46,24 @@ const makeRequest = (method, url, data)=>{
   });
 }
 const U2FAuth = () => {
-  makeRequest('GET', "https://localhost:5000/authchall").then(function (data) {
-    const authRequest = JSON.parse(data);
-    window.u2f.sign(authRequest.appId, authRequest.challenge, [authRequest], (authResponse) => {
-        makeRequest('POST', "https://localhost:5000/authverify", authResponse).then((result)=>{
-            console.log(result)
-        })
-    });
-});
+  fetch("https://localhost:5000/authchall", {
+    method: 'GET',
+    credentials: 'include',
+  })
+    .then((data) => {
+      return data.json()
+    }).then((authRequest) => {
+      window.u2f.sign(authRequest.appId, [authRequest], [], (authResponse) => {
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(authResponse)
+        };
+        fetch('https://localhost:5000/authverify', requestOptions)
+          .then(response => response.json())
+          .then(data => console.log(data));
+      });
+    })
 }
 const Login = () => {
   const history = useHistory();

@@ -20,7 +20,7 @@ const app = express()
 app.use(pretty({ query: 'pretty' }));
 app.use(session({
   secret: 'https://infocrypt.jeffersonding.com',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
 }
 ))
