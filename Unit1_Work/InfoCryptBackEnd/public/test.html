@@ -35,6 +35,7 @@
 
         function reg() {
             makeRequest('GET', "https://localhost:5000/register").then(function (data) {
+                
                 var registrationRequest = JSON.parse(data);
                 window.u2f.register(registrationRequest.appId, [registrationRequest], [], (registrationResponse) => {
                     makeRequest('POST', "https://localhost:5000/verify", registrationResponse)

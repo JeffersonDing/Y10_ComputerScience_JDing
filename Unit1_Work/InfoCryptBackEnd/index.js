@@ -5,7 +5,8 @@ const yub = require('yub')
 const u2f = require('./custom_modules/u2f');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const https = require("https"),
+const https = require("https");
+const cors = require('cors');
 fs = require("fs");
 
 const options = {
@@ -19,12 +20,16 @@ const app = express()
 app.use(pretty({ query: 'pretty' }));
 app.use(session({
   secret: 'https://infocrypt.jeffersonding.com',
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: true,
 }
 ))
 app.use(express.static('public'))
 app.use(bodyParser.json())
+app.use(cors({
+  credentials: true,
+  origin: 'https://localhost:4000'
+}));
 
 const port = 5000
 
@@ -99,6 +104,10 @@ app.get('/register',(req,res)=>{
   registrationChallengeHandler(req,res);
 })
 
+app.post('/verify',(req,res)=>{
+  registrationVerificationHandler(req,res);
+})
+
 app.get('/authchall',(req,res)=>{
   authenticationChallengeHandler(req,res);
 })
@@ -106,42 +115,36 @@ app.get('/authchall',(req,res)=>{
 app.post('/authverify',(req,res)=>{
   authenticationVerificationHandler(req,res);
 })
-
-app.post('/verify',(req,res)=>{
-  registrationVerificationHandler(req,res);
-})
-
-const APP_ID = "https://localhost:5000"
+const APP_ID = "https://localhost:4000"
 
 function registrationChallengeHandler(req, res) {
   const registrationRequest = u2f.request(APP_ID);
   req.session.registrationRequest = registrationRequest;
+  req.session.save();
   return res.send(registrationRequest);
 }
 
 
 function registrationVerificationHandler(req, res) {
+  console.log(req.session.registrationRequest)
   const result = u2f.checkRegistration(req.session.registrationRequest, req.body);
 
   if (result.successful) {
     console.log(result)
-    return res.sendStatus(200);
+    return res.send({result});
   }
- return res.send({result});
+ return res.send({result})
 }
 
 function authenticationChallengeHandler(req, res) {
-  const keyHandle = "dhFsl8SjrS-H2yf4KB7TpT19UKefboQpT5OAdbyQ0QWPqGlfRcxOcGc4cBxnK44IbUmh0bBHYo_z_FlVM7T0kA"
-
+  const keyHandle = "nLIQWqQc5qRGqZvmZEaba2tpyEPsmC2l2g5SA69PdGNBK8fAEcEB_lSbNcBFbIYDCj8MNCSlByAK5RabWua_uA"
   const authRequest = u2f.request(APP_ID, keyHandle);
   req.session.authRequest = authRequest;
-
   return res.send(authRequest);
 }
 
 function authenticationVerificationHandler(req, res) {
-
-  const publicKey = "BP-wCxb_ZIoD4CEPFeQ-TDMiLjBqBXtuZCOehr5EQX6UOv5kWYXDBrv6tgx9F8D5coBC-I4cdWxPgS9AJmk4rVI"
+  const publicKey = "BE6qFxpkHXaJDBrqbGnCqJg-5KVIPaCeMYGtmCEFcHzQVkcmLiGTGZ0Qspl--WuV5yaYIfuH52HicWwzGmf0WT8"
 
   const result = u2f.checkSignature(req.session.authRequest, req.body, publicKey);
 
@@ -149,7 +152,7 @@ function authenticationVerificationHandler(req, res) {
     return res.status(200).json({valid:true,identity:"cccccckkuigt"})
   }
 
-  return res.statuse(401).send({valid:false,identity:"cccccckkuigt"})
+  return res.status(401).send({valid:false,identity:"cccccckkuigt"})
 }
 
 https.createServer(options,app).listen(5000);
