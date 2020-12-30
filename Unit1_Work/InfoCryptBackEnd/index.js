@@ -28,7 +28,7 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(cors({
   credentials: true,
-  origin: 'https://localhost:4000'
+  origin: 'https://infocrypt.jeffersonding.com'
 }));
 
 const port = 5000
@@ -132,7 +132,7 @@ app.get('/authchall', (req, res) => {
 app.post('/authverify', (req, res) => {
   authenticationVerificationHandler(req, res);
 })
-const APP_ID = "https://localhost:4000"
+const APP_ID = "https://infocrypt.jeffersonding.com"
 
 function registrationChallengeHandler(req, res) {
   const registrationRequest = u2f.request(APP_ID);
