@@ -65,10 +65,10 @@ const Login = () => {
   }
 
   const U2FAuth = () => {
-    makeRequest('GET', "https://infocrypt.jeffersonding.com:/authchall").then(function (data) {
+    makeRequest('GET', "https://infocrypt.jeffersonding.com/authchall").then(function (data) {
       const authRequest = JSON.parse(data);
       window.u2f.sign(authRequest.appId, authRequest.challenge, [authRequest], (authResponse) => {
-        makeRequest('POST', "https://infocrypt.jeffersonding.com:/authverify", authResponse).then((result) => {
+        makeRequest('POST', "https://infocrypt.jeffersonding.com/authverify", authResponse).then((result) => {
           if (result.valid) {
             console.log(result)
             history.push('/dashboard')
@@ -112,7 +112,7 @@ const Login = () => {
                     <CRow>
                       <CCol xs="6">
                         <CButton color="primary" className="px-4" onClick={() => {
-                          fetch(`https://infocrypt.jeffersonding.com:/otp?p=${otp}&usr=${usr}`)
+                          fetch(`https://infocrypt.jeffersonding.com/otp?p=${otp}&usr=${usr}`)
                             .then(response => response.json())
                             .then(data => {
                               if (data.valid) {

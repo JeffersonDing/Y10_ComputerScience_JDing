@@ -7,12 +7,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const https = require("https");
 const cors = require('cors');
-fs = require("fs");
 
-const options = {
-  key: fs.readFileSync("./cert/ssl/server.key"),
-  cert: fs.readFileSync("./cert/ssl/server.crt")
-};
 
 yub.init(60017, 'zsxBf5qnrG+rMy2ZRpIje1/drMk=');
 
@@ -24,7 +19,7 @@ app.use(session({
   saveUninitialized: true,
 }
 ))
-app.use(express.static('public'))
+app.use(express.static('build'))
 app.use(bodyParser.json())
 app.use(cors({
   credentials: true,
@@ -173,4 +168,4 @@ function authenticationVerificationHandler(req, res) {
   return res.status(401).send({ valid: false, identity: "cccccckkuigt" })
 }
 
-https.createServer(options, app).listen(5000);
+app.listen(5000)
