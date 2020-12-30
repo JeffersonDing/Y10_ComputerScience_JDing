@@ -1,9 +1,9 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "InfoCrypt",
+  "name": "InfoCrypt",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
+      "src": "./assets/img/logo_mini.png",
       "sizes": "100x100",
       "type": "image/png"
     }

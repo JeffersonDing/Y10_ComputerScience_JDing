@@ -18,7 +18,7 @@ import CIcon from '@coreui/icons-react'
 const makeRequest = (method, url, data)=>{
   return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest();
-      
+      xhr.withCredentials = true;
       xhr.open(method, url);
       xhr.onload = function () {
           if (this.status >= 200 && this.status < 300) {
@@ -36,6 +36,7 @@ const makeRequest = (method, url, data)=>{
               statusText: xhr.statusText
           });
       };
+      // eslint-disable-next-line
       if (method == "POST" && data) {
           xhr.responseType = 'json';
           xhr.setRequestHeader('Content-Type', 'application/json');

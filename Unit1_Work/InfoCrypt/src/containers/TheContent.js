@@ -15,7 +15,7 @@ const loading = (
   </div>
 )
 
-const TheContent = () => {
+const TheContent = (props) => {
   return (
     <main className="c-main">
       <CContainer fluid>
@@ -28,14 +28,14 @@ const TheContent = () => {
                   path={route.path}
                   exact={route.exact}
                   name={route.name}
-                  render={props => (
+                  render={() => (
                     <CFade>
-                      <route.component {...props} />
+                      <route.component {...props.price} />
                     </CFade>
                   )} />
               )
             })}
-            <Redirect from="/" to="/dashboard" />
+            <Redirect from="/" to="/login" />
           </Switch>
         </Suspense>
       </CContainer>

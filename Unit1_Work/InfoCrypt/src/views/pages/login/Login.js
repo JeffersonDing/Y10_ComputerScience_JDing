@@ -12,63 +12,76 @@ import {
   CInputGroup,
   CInputGroupPrepend,
   CInputGroupText,
-  CRow
+  CRow,
+  CAlert
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-const makeRequest = (method, url, data)=>{
+const makeRequest = (method, url, data) => {
   return new Promise(function (resolve, reject) {
-      var xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-      xhr.open(method, url);
-      xhr.onload = function () {
-          if (this.status >= 200 && this.status < 300) {
-              resolve(xhr.response);
-          } else {
-              reject({
-                  status: this.status,
-                  statusText: xhr.statusText
-              });
-          }
-      };
-      xhr.onerror = function () {
-          reject({
-              status: this.status,
-              statusText: xhr.statusText
-          });
-      };
-      if (method == "POST" && data) {
-          xhr.responseType = 'json';
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.send(JSON.stringify(data));
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.open(method, url);
+    xhr.onload = function () {
+      if (this.status >= 200 && this.status < 300) {
+        resolve(xhr.response);
       } else {
-          xhr.send();
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
       }
+    };
+    xhr.onerror = function () {
+      reject({
+        status: this.status,
+        statusText: xhr.statusText
+      });
+    };
+    // eslint-disable-next-line
+    if (method == "POST" && data) {
+      xhr.responseType = 'json';
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(data));
+    } else {
+      xhr.send();
+    }
   });
 }
 
 const Login = () => {
   const history = useHistory();
-
   const [usr, setUsr] = useState("");
   const [otp, setOtp] = useState("");
-  const [auth, setAuth] = useState(false)
+  const [auth, setAuth] = useState(false);
+
+  const authFail = () => {
+    if(auth){
+      return (
+        <CAlert color="danger">
+          Sorry, Wrong Credentials! Plaese try again.
+        </CAlert>
+      )
+    }
+  }
+
   const U2FAuth = () => {
     makeRequest('GET', "https://localhost:5000/authchall").then(function (data) {
       const authRequest = JSON.parse(data);
       window.u2f.sign(authRequest.appId, authRequest.challenge, [authRequest], (authResponse) => {
-          makeRequest('POST', "https://localhost:5000/authverify", authResponse).then((result)=>{
-              if(result.valid){
-                console.log(result)
-                setAuth(true)
-                history.push('/')
-              }else{
-                console.log("Access Failed")
-              }
-              
-          })
+        makeRequest('POST', "https://localhost:5000/authverify", authResponse).then((result) => {
+          if (result.valid) {
+            console.log(result)
+            history.push('/dashboard')
+          } else {
+            console.log("Access Failed")
+            setAuth(true);
+          }
+
+        })
       });
-  });
+    });
   }
+
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -99,14 +112,13 @@ const Login = () => {
                     <CRow>
                       <CCol xs="6">
                         <CButton color="primary" className="px-4" onClick={() => {
-                          fetch(`https://localhost:5000/otp?p=${otp}`)
+                          fetch(`https://localhost:5000/otp?p=${otp}&usr=${usr}`)
                             .then(response => response.json())
                             .then(data => {
                               if (data.valid) {
+                                history.push('/dashboard')
+                              }else{
                                 setAuth(true)
-                                history.push('/')
-                              } else {
-                                setAuth(false)
                               }
                             })
                         }}>Login</CButton>
@@ -136,6 +148,10 @@ const Login = () => {
               </CCard>
             </CCardGroup>
           </CCol>
+          
+        </CRow>
+        <CRow className="py-5 justify-content-center">
+        {authFail()}
         </CRow>
       </CContainer>
     </div>
