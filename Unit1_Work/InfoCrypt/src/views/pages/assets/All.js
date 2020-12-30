@@ -35,7 +35,7 @@ const genBadges=(array)=>{
 }
 
 const getMeta=(symbol)=>{
-  fetch(`https://localhost:5000/meta?q=${symbol}`)
+  fetch(`https://infocrypt.jeffersonding.com:/meta?q=${symbol}`)
     .then(resp=>{
       return(resp.json())
     }).then(json=>{

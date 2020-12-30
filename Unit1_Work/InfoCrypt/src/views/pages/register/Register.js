@@ -48,10 +48,10 @@ const makeRequest = (method, url, data)=>{
 }
 
 const U2FReg = () => {
-  makeRequest('GET', "https://localhost:5000/register").then(function (data) {
+  makeRequest('GET', "https://infocrypt.jeffersonding.com:/register").then(function (data) {
     var registrationRequest = JSON.parse(data);
     window.u2f.register(registrationRequest.appId, [registrationRequest], [], (registrationResponse) => {
-        makeRequest('POST', "https://localhost:5000/verify", registrationResponse)
+        makeRequest('POST', "https://infocrypt.jeffersonding.com:/verify", registrationResponse)
     });
 });
 

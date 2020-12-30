@@ -52,7 +52,7 @@ class App extends Component {
     },
   }
   componentDidMount(){
-    fetch("https://localhost:5000/latest")
+    fetch("https://infocrypt.jeffersonding.com:/latest")
       .then(resp => {
         return resp.json()
       }).then(json => {
