@@ -9,7 +9,7 @@ const https = require("https");
 const cors = require('cors');
 
 
-yub.init(60017, 'zsxBf5qnrG+rMy2ZRpIje1/drMk=');
+yub.init(60017, '********************');
 
 const app = express()
 app.use(pretty({ query: 'pretty' }));
@@ -29,7 +29,7 @@ app.use(cors({
 const port = 5000
 
 
-const apiKey = '6dcdf365-574a-49e8-87ba-b1e624b48205'
+const apiKey = '*********************'
 
 
 app.get('/', (req, res) => {
@@ -149,14 +149,14 @@ function registrationVerificationHandler(req, res) {
 }
 
 function authenticationChallengeHandler(req, res) {
-  const keyHandle = "nLIQWqQc5qRGqZvmZEaba2tpyEPsmC2l2g5SA69PdGNBK8fAEcEB_lSbNcBFbIYDCj8MNCSlByAK5RabWua_uA"
+  const keyHandle = "******************************************************"
   const authRequest = u2f.request(APP_ID, keyHandle);
   req.session.authRequest = authRequest;
   return res.send(authRequest);
 }
 
 function authenticationVerificationHandler(req, res) {
-  const publicKey = "BE6qFxpkHXaJDBrqbGnCqJg-5KVIPaCeMYGtmCEFcHzQVkcmLiGTGZ0Qspl--WuV5yaYIfuH52HicWwzGmf0WT8"
+  const publicKey = "*******************************************************"
 
   const result = u2f.checkSignature(req.session.authRequest, req.body, publicKey);
 
