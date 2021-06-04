@@ -2,9 +2,6 @@
 
 using namespace std;
 
-ifstream cin("div7.in");
-ofstream cout("div7.out");
-
 int N, pre[50001], ans = 0;
 
 int main()

@@ -2,10 +2,6 @@
 
 using namespace std;
 
-typedef long long ll;
-typedef vector<int> vi;
-typedef pair<int, int> pi;
-
 #define FOR(i, a, b) for (int i = a; i < b; i++)
 #define F0R(i, a) for (int i = 0; i < a; i++)
 #define FORd(i, a, b) for (int i = (b)-1; i >= a; i--)
@@ -21,20 +17,19 @@ typedef pair<int, int> pi;
 const int MOD = 1000000007;
 double PI = 4 * atan(1);
 
-vi a, b;
+vector<int> a, b;
 int n;
 
 bool need()
 {
     F0R(i, n)
-    if (a[i] > b[i]) return 1;
+    if (a[i] > b[i])
+        return 1;
     return 0;
 }
 
 int main()
 {
-    ifstream cin("cbarn.in");
-    ofstream cout("cbarn.out");
     cin >> n;
     F0R(i, n)
     {

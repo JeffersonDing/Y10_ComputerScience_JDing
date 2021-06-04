@@ -2,22 +2,8 @@
 
 using namespace std;
 
-#define ll long long
-#define mp make_pair
-#define pb push_back
-#define pi pair<int, int>
-#define vi vector<int>
-
 #define FOR(i, a, b) for (int i = a; i < b; i++)
 #define F0R(i, a) for (int i = 0; i < a; i++)
-
-#define f first
-#define s second
-#define lb lower_bound
-#define ub upper_bound
-
-ifstream cin("gates.in");
-ofstream cout("gates.out");
 
 int N, components;
 bool visit[2001][2001], hor[2000][2001], vor[2000][2001];
@@ -67,7 +53,7 @@ void start(int x, int y)
 
 int main()
 {
-    ios_base::sync_with_stdio(0), cin >> N;
+    cin >> N;
     int curx = 1000, cury = 1000;
 
     F0R(i, N)

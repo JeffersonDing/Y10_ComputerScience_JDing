@@ -29,10 +29,6 @@ void Solve()
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    freopen("bcount.in", "r", stdin);
-    freopen("bcount.out", "w", stdout);
     Input();
     Solve();
 }

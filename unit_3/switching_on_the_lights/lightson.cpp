@@ -8,15 +8,11 @@ struct switchs
     int used = 0;
 };
 
-ifstream cin("lightson.in");
-ofstream cout("lightson.out");
-
 int grid[102][102], reachable[102][102];
 switchs a[20000];
-
-int main()
+int N, M, ans = 0;
+void Input()
 {
-    int N, M, ans = 0;
     cin >> N >> M;
     reachable[1][1] = 1;
     reachable[1][2] = 1;
@@ -26,7 +22,10 @@ int main()
     {
         cin >> a[i].posx >> a[i].posy >> a[i].newx >> a[i].newy;
     }
+}
 
+void Solve()
+{
     bool check = true;
     while (check == true)
     {
@@ -83,4 +82,9 @@ int main()
         }
     }
     cout << ans;
+}
+int main()
+{
+    Input();
+    Solve();
 }

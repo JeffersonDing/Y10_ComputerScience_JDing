@@ -33,10 +33,6 @@ void Solve()
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    freopen("highcard.in", "r", stdin);
-    freopen("highcard.out", "w", stdout);
     Input();
     Solve();
 }
