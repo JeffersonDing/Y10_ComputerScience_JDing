@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "C:\\Users\\tydin\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "files.associations": {
+        "*.phps": "php",
+        "*.sage": "python",
+        "iosfwd": "cpp"
+    }
+}
