@@ -106,9 +106,11 @@ In conclusion, this is totally personal experience and preference but I highly r
 ## 4. Time Complexity & Big O Notation
 
 While doing competitive programming questions, you need to understand time and space complexity as well as Big O notation. The correctness of your solution is one thing to consider, the efficiency is also in the criteria of the judging.  
-Most competitions will give you the
+Most competitions will give you the specific number for it's test cases such as `N<500,000` and you will need to make your solution efficient enough to complete all test cases, even the ones with the highest N.  
+Big O notation is a topic worth a whole article itself, but it essentially estimates how much time does your program need to complete the calculations. This is often found by how many times you need to iterate through the input and does your solution compound exponentially.  
+I recommend you look at the question and come up with the brute force solution first - the solution that simulates what the question is asking. For easier levels of contests, this is often suffice but for higher levels, you will need to either optimize the brute force using various techniques or go a completely different route.
 
-## 6. Code Splitting & The Debugger
+## 5. Code Splitting & The Debugger
 
 Looking back at `1.` you can see that in the template for competitive programming, I split the code into 2 main sections `Input()` and `Solve()`. This is effectively code splitting.
 
@@ -116,7 +118,7 @@ There are many benefits to code splitting but one of the most obvious is code re
 
 Almost all languages that you use for Competitive programming has its debugger and incorporating that with code splitting, you will be able to step through your code chunk by chunk, function by function, line by line and locate the issues much more easily.
 
-## 7. Edge Cases and Logic Charts
+## 6. Edge Cases and Logic Charts
 
 Last but not least, setting up flowcharts and identifying the edge cases are also crucial. I recommend you take out a piece of paper or in your text editor, try to draw blocks of operations that move you closer to the solution. **Try to draw the brute force solution first** then see where you can improve on or is there totally new approaches?
 
