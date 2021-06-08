@@ -4,17 +4,18 @@ using namespace std;
 
 #define FOR(i, a, b) for (int i = a; i < b; i++)
 #define F0R(i, a) for (int i = 0; i < a; i++)
-#define FORd(i, a, b) for (int i = (b)-1; i >= a; i--)
-#define F0Rd(i, a) for (int i = (a)-1; i >= 0; i--)
 
 bool best[101][101], temp[101][101];
 int MOD = 1000000007;
 int ans = MOD;
 int x, y, k, m;
 
-int main()
+void Input()
 {
     cin >> x >> y >> k >> m;
+}
+void Solve()
+{
     F0R(i, 101)
     F0R(j, 101)
     best[i][j] = 0;
@@ -44,4 +45,9 @@ int main()
     if (best[i][j])
         ans = min(ans, abs(i + j - m));
     cout << ans;
+}
+int main()
+{
+    Input();
+    Solve();
 }

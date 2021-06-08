@@ -8,7 +8,7 @@ using namespace std;
 int N, K;
 vector<int> nums;
 
-int main()
+void Input()
 {
     cin >> N >> K;
     F0R(i, N)
@@ -17,7 +17,10 @@ int main()
         cin >> n, nums.push_back(n);
     }
     sort(nums.begin(), nums.end());
+}
 
+void Solve()
+{
     for (int R = 0;; ++R)
     {
         int count = 0, index = 0;
@@ -31,7 +34,12 @@ int main()
         if (index == N)
         {
             cout << R;
-            return 0;
+            return;
         }
     }
+}
+int main()
+{
+    Input();
+    Solve();
 }
